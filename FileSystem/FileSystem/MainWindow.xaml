@@ -1,0 +1,62 @@
+﻿<Window x:Class="FileSystem.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FileSystem"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="500" Width="800">
+        
+    <Window.Resources>
+        <ContextMenu x:Key="RightClickMenu">
+            <MenuItem Header="Open" Click="MenuItem_Click"/>
+            <MenuItem Header="Menu item 2" />
+            <Separator />
+            <MenuItem Header="Menu item 3" />
+        </ContextMenu>
+    </Window.Resources>
+    <Grid>
+        <DockPanel>
+            <Grid DockPanel.Dock="Top" Height="25">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="8*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Content="back" Grid.Column="0"/>
+                <Button Content="front" Grid.Column="1" />
+                <TextBox Text="address" Grid.Column="2" />
+                <TextBlock Text="search" Grid.Column="3" />
+            </Grid>
+            <TreeView x:Name="TreeViewMenu" DockPanel.Dock="Left"  Width="200">
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate DataType="{x:Type local:MenuItem}" ItemsSource="{Binding Items}">
+                        <TextBlock Text="{Binding Title}" />
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+            <DataGrid x:Name="FilesListView" ItemsSource="{Binding}" AutoGenerateColumns="False" SelectionMode="Extended" SelectionUnit="FullRow">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True" Width="*"/>
+                    <DataGridTextColumn Header="Size" Binding="{Binding Size}" IsReadOnly="True" Width="*"/>
+                    <DataGridTextColumn Header="Created Time" Binding="{Binding CreatedTime}" IsReadOnly="True" Width="2*"/>
+
+                </DataGrid.Columns>
+                <DataGrid.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <EventSetter Event="MouseDoubleClick"  Handler="DataGridCell_MouseDoubleClick"/>
+                        <EventSetter Event="PreviewMouseRightButtonUp" Handler="DataGridCell_PreviewMouseRightButtonUp"/>
+                    </Style>
+                </DataGrid.CellStyle>
+            </DataGrid>
+
+
+
+
+        </DockPanel>
+
+    </Grid>
+
+    
+</Window>
