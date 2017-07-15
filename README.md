@@ -3,7 +3,7 @@ The third project of the Operating System course which simulates the mechanism o
 
 ### baisc Interface
 
-![Basic Interface](https://github.com/dm-druid/FileSystem/tree/master/FileSystem/Basic Interface.png)
+![Basic Interface](https://github.com/dm-druid/FileSystem/raw/master/FileSystem/Basic%20Interface.png)
 
 Frankly speaking, it is a little ugly.
 
