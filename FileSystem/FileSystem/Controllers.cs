@@ -219,5 +219,13 @@ namespace FileSystem
                 FilesListView.DataContext = filesView;
             }
         }
+        private void DiskFormatting_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Do you want to clear your disk record?", "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                SerializeNow();
+                UpdateView();
+            }
+        }
     }
 }

@@ -27,6 +27,7 @@
             </MenuItem>
             <MenuItem Header="Refresh" Click="Refresh_Click"/>
             <MenuItem Header="Paste" Click="Paste_Click"/>
+            <MenuItem Header="Disk Formatting" Click="DiskFormatting_Click"/>
 
         </ContextMenu>
     </Window.Resources>

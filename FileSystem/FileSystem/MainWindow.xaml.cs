@@ -106,10 +106,16 @@ namespace FileSystem
         public void SerializeNow()
         {
             // for init
+            root_item = new CatalogItem();
+            catalog_table = new CatalogTable();
+            folderStack = new Stack<CatalogItem>();
+            stateRecord = new StateRecord();
+            disk = new Disk();
             root_item.fileName = "root";
             File root_file = new File(root_item);
             root_file.Path = "root";
             catalog_table.map(root_item, root_file);
+            current_item = root_item;
 
             FileStream fileStream = new FileStream(System.IO.Path.Combine(dir, "catalogTree.dat"), FileMode.Create);
             BinaryFormatter b = new BinaryFormatter();
@@ -123,8 +129,8 @@ namespace FileSystem
             FileStream fileStream3 = new FileStream(System.IO.Path.Combine(dir, "disk.dat"), FileMode.Create);
             b.Serialize(fileStream3, disk);
             fileStream3.Close();
-            stateRecord.fileCount = CatalogItem.fileCount;
 
+            stateRecord.fileCount = CatalogItem.fileCount;
             FileStream fileStream4 = new FileStream(System.IO.Path.Combine(dir, "stateRecord.dat"), FileMode.Create);
             b.Serialize(fileStream4, stateRecord);
             fileStream4.Close();
