@@ -5,14 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FileSystem"
         mc:Ignorable="d"
+        Closing="SerializeNow"
         Title="MainWindow" Height="500" Width="800">
         
     <Window.Resources>
         <ContextMenu x:Key="RightClickMenu">
-            <MenuItem Header="Open" Click="MenuItem_Click"/>
-            <MenuItem Header="Menu item 2" />
-            <Separator />
-            <MenuItem Header="Menu item 3" />
+            <MenuItem Header="Open" Click="MenuItemOpen_Click"/>
+            <MenuItem Header="Rename" Click="MenuItemRename_Click"/>
+            <MenuItem Header="Delete" Click="MenuItemDelete_Click"/>
+            <Separator/>
+            <MenuItem Header="Copy" Click="MenuItemCopy_Click"/>
+            <MenuItem Header="Create Shortcut" Click="MenuItemShortcut_Click"/>
+
+            <Separator/>
+            <MenuItem Header="Property" Click="MenuItemProperty_Click"/>
+        </ContextMenu>
+        <ContextMenu x:Key="BlankRightClickMenu">
+            <MenuItem Header="New">
+                <MenuItem Header="Text File" Click="NewFile_Click"/>
+                <MenuItem Header="Folder" Click="NewFolder_Click"/>
+            </MenuItem>
+            <MenuItem Header="Refresh" Click="Refresh_Click"/>
+            <MenuItem Header="Paste" Click="Paste_Click"/>
+
         </ContextMenu>
     </Window.Resources>
     <Grid>
@@ -20,40 +35,60 @@
             <Grid DockPanel.Dock="Top" Height="25">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="8*"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2*"/>
+
                 </Grid.ColumnDefinitions>
-                <Button Content="back" Grid.Column="0"/>
-                <Button Content="front" Grid.Column="1" />
-                <TextBox Text="address" Grid.Column="2" />
-                <TextBlock Text="search" Grid.Column="3" />
+                <Button Content="back" BorderThickness="0" Grid.Column="0" x:Name="backButton" IsEnabled="False" Click="BackButton_Click">
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="AliceBlue" Offset="0"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+                <TextBlock Text="address" VerticalAlignment="Center" x:Name="addressBar" Grid.Column="1" Margin="10,4,0,5" />
+                <Button Content="search" BorderThickness="0" Grid.Column="2" Click="SearchButton_Click">
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="AliceBlue" Offset="0"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+                <TextBox x:Name="searchTextBox" VerticalAlignment="Center" HorizontalScrollBarVisibility="Hidden" ScrollViewer.CanContentScroll="True" Text="" Grid.Column="3" Margin="9.5,4,0,3"/>
             </Grid>
-            <TreeView x:Name="TreeViewMenu" DockPanel.Dock="Left"  Width="200">
+            <TreeView x:Name="TreeViewMenu" DockPanel.Dock="Left"  Width="200" >
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate DataType="{x:Type local:MenuItem}" ItemsSource="{Binding Items}">
-                        <TextBlock Text="{Binding Title}" />
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="Resource/folder.ico" Width="13" Height="13" Margin="1 1 1 1"/>
+                            <TextBlock Text="{Binding Title}" />
+                        </StackPanel>
                     </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="TreeViewItem">
+                        <Setter Property="TreeViewItem.IsExpanded" Value="True"/>
+                    </Style>
+                </TreeView.ItemContainerStyle>
             </TreeView>
-            <DataGrid x:Name="FilesListView" ItemsSource="{Binding}" AutoGenerateColumns="False" SelectionMode="Extended" SelectionUnit="FullRow">
+            <DataGrid x:Name="FilesListView" Background="AliceBlue" HorizontalGridLinesBrush="AliceBlue" GridLinesVisibility="Horizontal" ItemsSource="{Binding}" AutoGenerateColumns="False" SelectionMode="Extended" SelectionUnit="FullRow" PreviewMouseRightButtonUp="FilesListView_PreviewMouseRightButtonUp">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True" Width="*"/>
                     <DataGridTextColumn Header="Size" Binding="{Binding Size}" IsReadOnly="True" Width="*"/>
+                    <DataGridTextColumn Header="Type" Binding="{Binding Type}" IsReadOnly="True" Width="*"/>
                     <DataGridTextColumn Header="Created Time" Binding="{Binding CreatedTime}" IsReadOnly="True" Width="2*"/>
-
                 </DataGrid.Columns>
                 <DataGrid.CellStyle>
                     <Style TargetType="DataGridCell">
+                        <Setter Property="Selector.Background" Value="LightBlue"/>
                         <EventSetter Event="MouseDoubleClick"  Handler="DataGridCell_MouseDoubleClick"/>
                         <EventSetter Event="PreviewMouseRightButtonUp" Handler="DataGridCell_PreviewMouseRightButtonUp"/>
                     </Style>
                 </DataGrid.CellStyle>
             </DataGrid>
-
-
-
-
         </DockPanel>
 
     </Grid>
